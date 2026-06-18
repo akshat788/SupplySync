@@ -62,7 +62,7 @@ const Login = () => {
             </Typography>
           </Box>
 
-          <Typography variant="h6" fontWeight={600} mb={3}>
+          <Typography variant="h6" fontWeight={600} mb={3} textAlign="center">
             Sign in to your account
           </Typography>
 

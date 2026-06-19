@@ -20,6 +20,8 @@ import Users from "./pages/admin/Users";
 
 // Retailer pages
 import RetailerDashboard from "./pages/retailer/RetailerDashboard";
+import RetailerOrders from "./pages/retailer/RetailerOrders";
+import RetailerProducts from "./pages/retailer/RetailerProducts";
 
 function App() {
   return (
@@ -60,6 +62,12 @@ function App() {
           {/* Retailer routes */}
           <Route path="/retailer/dashboard" element={
             <PrivateRoute roles={["retailer"]}><RetailerDashboard /></PrivateRoute>
+          } />
+          <Route path="/retailer/products" element={
+            <PrivateRoute roles={["retailer"]}><RetailerProducts /></PrivateRoute>
+          } />
+          <Route path="/retailer/orders" element={
+            <PrivateRoute roles={["retailer"]}><RetailerOrders /></PrivateRoute>
           } />
 
           {/* Catch all */}

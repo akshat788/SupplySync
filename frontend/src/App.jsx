@@ -18,6 +18,11 @@ import Orders from "./pages/admin/Orders";
 import Analytics from "./pages/admin/Analytics";
 import Users from "./pages/admin/Users";
 
+// Supplier pages
+import SupplierDashboard from "./pages/supplier/SupplierDashboard";
+import SupplierProducts from "./pages/supplier/SupplierProducts";
+import SupplierPurchaseOrders from "./pages/supplier/SupplierPurchaseOrders";
+
 // Retailer pages
 import RetailerDashboard from "./pages/retailer/RetailerDashboard";
 import RetailerOrders from "./pages/retailer/RetailerOrders";
@@ -57,6 +62,17 @@ function App() {
           } />
           <Route path="/admin/users" element={
             <PrivateRoute roles={["admin"]}><Users /></PrivateRoute>
+          } />
+
+          {/* Supplier routes */}
+          <Route path="/supplier/dashboard" element={
+            <PrivateRoute roles={["supplier"]}><SupplierDashboard /></PrivateRoute>
+          } />
+          <Route path="/supplier/products" element={
+            <PrivateRoute roles={["supplier"]}><SupplierProducts /></PrivateRoute>
+          } />
+          <Route path="/supplier/purchase-orders" element={
+            <PrivateRoute roles={["supplier"]}><SupplierPurchaseOrders /></PrivateRoute>
           } />
 
           {/* Retailer routes */}

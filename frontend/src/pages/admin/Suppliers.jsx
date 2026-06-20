@@ -16,6 +16,7 @@ const Suppliers = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [open, setOpen] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [form, setForm] = useState({
     name: "", contactPerson: "", email: "",
     phone: "", location: "", products: "",
@@ -34,18 +35,45 @@ const Suppliers = () => {
 
   useEffect(() => { fetchSuppliers(); }, []);
 
+  const handleOpen = (supplier = null) => {
+    if (supplier) {
+      setEditId(supplier._id);
+      setForm({
+        name: supplier.name || "",
+        contactPerson: supplier.contactPerson || "",
+        email: supplier.email || "",
+        phone: supplier.phone || "",
+        location: supplier.location || "",
+        products: supplier.products?.join(", ") || "",
+      });
+    } else {
+      setEditId(null);
+      setForm({ name: "", contactPerson: "", email: "", phone: "", location: "", products: "" });
+    }
+    setOpen(true);
+  };
+
   const handleSubmit = async () => {
     try {
-      await API.post("/suppliers", {
+      const payload = {
         ...form,
-        products: form.products.split(",").map((p) => p.trim()),
-      });
-      setSuccess("Supplier added successfully!");
+        products: form.products.split(",").map((p) => p.trim()).filter(Boolean),
+      };
+
+      if (editId) {
+        await API.put(`/suppliers/${editId}`, payload);
+        setSuccess("Supplier updated successfully!");
+      } else {
+        await API.post("/suppliers", payload);
+        setSuccess("Supplier added successfully!");
+      }
+
       setOpen(false);
+      setEditId(null);
       setForm({ name: "", contactPerson: "", email: "", phone: "", location: "", products: "" });
       fetchSuppliers();
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to add supplier.");
+      setError(err.response?.data?.message || "Failed to save supplier.");
     }
   };
 
@@ -56,7 +84,7 @@ const Suppliers = () => {
           <Typography variant="h5" fontWeight="bold" color="#1a1a2e">Suppliers</Typography>
           <Typography variant="body2" color="text.secondary">Manage your supplier network</Typography>
         </Box>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpen()}
           sx={{ backgroundColor: "#1a1a2e", "&:hover": { backgroundColor: "#0f3460" }, borderRadius: 2 }}>
           Add Supplier
         </Button>
@@ -90,7 +118,7 @@ const Suppliers = () => {
                     suppliers.map((s) => (
                       <TableRow key={s._id} hover>
                         <TableCell><Chip label={s.supplierCode} size="small" /></TableCell>
-                        <TableCell fontWeight={500}>{s.name}</TableCell>
+                        <TableCell sx={{ fontWeight: 500 }}>{s.name}</TableCell>
                         <TableCell>{s.contactPerson}</TableCell>
                         <TableCell>{s.email}</TableCell>
                         <TableCell>{s.location}</TableCell>
@@ -101,7 +129,9 @@ const Suppliers = () => {
                           />
                         </TableCell>
                         <TableCell>
-                          <IconButton size="small" color="primary"><EditIcon fontSize="small" /></IconButton>
+                          <IconButton size="small" color="primary" onClick={() => handleOpen(s)}>
+                            <EditIcon fontSize="small" />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))
@@ -113,9 +143,9 @@ const Suppliers = () => {
         </CardContent>
       </Card>
 
-      {/* Add Supplier Dialog */}
+      {/* Add / Edit Supplier Dialog */}
       <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle fontWeight={600}>Add New Supplier</DialogTitle>
+        <DialogTitle fontWeight={600}>{editId ? "Edit Supplier" : "Add New Supplier"}</DialogTitle>
         <DialogContent sx={{ pt: 2 }}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             {[
@@ -138,7 +168,7 @@ const Suppliers = () => {
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleSubmit}
             sx={{ backgroundColor: "#1a1a2e", "&:hover": { backgroundColor: "#0f3460" } }}>
-            Add Supplier
+            {editId ? "Update Supplier" : "Add Supplier"}
           </Button>
         </DialogActions>
       </Dialog>

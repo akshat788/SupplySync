@@ -11,11 +11,11 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 
 const statusColors = {
-  Pending: "warning", Confirmed: "info", Shipped: "primary",
-  Delivered: "success", Cancelled: "error",
+  Pending: "warning", Approved: "info", Allocated: "secondary",
+  Dispatched: "primary", Delivered: "success", Cancelled: "error",
 };
 
-const SupplierPurchaseOrders = () => {
+const WarehouseOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -26,8 +26,8 @@ const SupplierPurchaseOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await API.get("/purchase-orders");
-      setOrders(data.data || []);
+      const { data } = await API.get("/orders");
+      setOrders(data.orders);
     } catch {
       setError("Failed to load orders.");
     } finally {
@@ -39,7 +39,7 @@ const SupplierPurchaseOrders = () => {
 
   const handleStatusUpdate = async () => {
     try {
-      await API.put(`/purchase-orders/${selectedOrder._id}/status`, { status: newStatus });
+      await API.put(`/orders/${selectedOrder._id}/status`, { status: newStatus });
       setSuccess(`Order marked as ${newStatus}`);
       setStatusOpen(false);
       fetchOrders();
@@ -51,8 +51,8 @@ const SupplierPurchaseOrders = () => {
   return (
     <Layout>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">Purchase Orders</Typography>
-        <Typography variant="body2" color="text.secondary">View and update your purchase orders</Typography>
+        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">Orders</Typography>
+        <Typography variant="body2" color="text.secondary">Manage and fulfill retailer orders</Typography>
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")}>{error}</Alert>}
@@ -67,30 +67,29 @@ const SupplierPurchaseOrders = () => {
               <Table>
                 <TableHead sx={{ backgroundColor: "#f8f9fa" }}>
                   <TableRow>
-                    {["PO Number", "Items", "Total", "Status", "Expected Date", "Actions"].map((h) => (
+                    {["Order #", "Retailer", "Items", "Total", "Status", "Date", "Actions"].map((h) => (
                       <TableCell key={h} sx={{ fontWeight: 600, color: "#1a1a2e" }}>{h}</TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {(orders || []).length === 0 ? (
+                  {orders.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={6} align="center" sx={{ py: 4, color: "text.secondary" }}>
-                        No purchase orders found.
+                      <TableCell colSpan={7} align="center" sx={{ py: 4, color: "text.secondary" }}>
+                        No orders yet.
                       </TableCell>
                     </TableRow>
                   ) : (
-                    (orders || []).map((o) => (
+                    orders.map((o) => (
                       <TableRow key={o._id} hover>
-                        <TableCell><Chip label={o.poNumber} size="small" /></TableCell>
+                        <TableCell><Chip label={o.orderNumber} size="small" /></TableCell>
+                        <TableCell>{o.retailer?.name}</TableCell>
                         <TableCell>{o.items?.length} item(s)</TableCell>
                         <TableCell>₹{o.totalAmount?.toLocaleString()}</TableCell>
                         <TableCell>
                           <Chip label={o.status} size="small" color={statusColors[o.status] || "default"} />
                         </TableCell>
-                        <TableCell>
-                          {o.expectedDeliveryDate ? new Date(o.expectedDeliveryDate).toLocaleDateString() : "—"}
-                        </TableCell>
+                        <TableCell>{new Date(o.createdAt).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <IconButton size="small" color="primary"
                             onClick={() => { setSelectedOrder(o); setNewStatus(o.status); setStatusOpen(true); }}>
@@ -113,7 +112,7 @@ const SupplierPurchaseOrders = () => {
           <FormControl size="small" fullWidth sx={{ mt: 1 }}>
             <InputLabel>Status</InputLabel>
             <Select value={newStatus} label="Status" onChange={(e) => setNewStatus(e.target.value)}>
-              {["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"].map((s) => (
+              {["Pending", "Approved", "Allocated", "Dispatched", "Delivered", "Cancelled"].map((s) => (
                 <MenuItem key={s} value={s}>{s}</MenuItem>
               ))}
             </Select>
@@ -131,4 +130,4 @@ const SupplierPurchaseOrders = () => {
   );
 };
 
-export default SupplierPurchaseOrders;
+export default WarehouseOrders;

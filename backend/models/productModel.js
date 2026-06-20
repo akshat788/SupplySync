@@ -52,11 +52,25 @@ const productSchema = new mongoose.Schema(
 
 // Auto-generate SKU before saving
 productSchema.pre("save", async function (next) {
-  if (!this.sku) {
-    const count = await mongoose.model("Product").countDocuments();
-    this.sku = `PRD-${String(count + 1).padStart(4, "0")}`;
+  try {
+    if (!this.sku) {
+      let sku;
+      let exists = true;
+      let count = await mongoose.model("Product").countDocuments();
+      while (exists) {
+        count++;
+        sku = `PRD-${String(count).padStart(4, "0")}`;
+        const existing = await mongoose.model("Product").findOne({ sku });
+        if (!existing) exists = false;
+      }
+      this.sku = sku;
+    }
+    next();
+  } catch (error) {
+    next(error);
   }
-  next();
 });
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports =
+  mongoose.models.Product ||
+  mongoose.model("Product", productSchema);

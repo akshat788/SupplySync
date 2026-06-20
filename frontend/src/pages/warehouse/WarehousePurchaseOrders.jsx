@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import API from "../../api/axios";
 import {
-  Box, Card, CardContent, Typography, Button, TextField,
-  Table, TableBody, TableCell, TableContainer, TableHead,
-  TableRow, Paper, Chip, Dialog, DialogTitle, DialogContent,
-  DialogActions, Alert, CircularProgress, MenuItem, Select,
-  FormControl, InputLabel, IconButton,
+  Box, Card, CardContent, Typography, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, Paper,
+  Chip, Alert, CircularProgress, Dialog, DialogTitle,
+  DialogContent, DialogActions, Button, TextField,
+  FormControl, InputLabel, Select, MenuItem, IconButton,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,7 +16,7 @@ const statusColors = {
   Delivered: "success", Cancelled: "error",
 };
 
-const PurchaseOrders = () => {
+const WarehousePurchaseOrders = () => {
   const [orders, setOrders] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -51,9 +51,7 @@ const PurchaseOrders = () => {
 
   useEffect(() => { fetchData(); }, []);
 
-  const addItem = () => {
-    setForm({ ...form, items: [...form.items, { product: "", quantity: 1, unitPrice: 0 }] });
-  };
+  const addItem = () => setForm({ ...form, items: [...form.items, { product: "", quantity: 1, unitPrice: 0 }] });
 
   const updateItem = (index, field, value) => {
     const items = [...form.items];
@@ -167,8 +165,7 @@ const PurchaseOrders = () => {
               InputLabelProps={{ shrink: true }}
               value={form.expectedDeliveryDate}
               onChange={(e) => setForm({ ...form, expectedDeliveryDate: e.target.value })} />
-
-            <Typography variant="subtitle2" fontWeight={600} mt={1}>Items</Typography>
+            <Typography variant="subtitle2" fontWeight={600}>Items</Typography>
             {form.items.map((item, index) => (
               <Box key={index} sx={{ display: "flex", gap: 2 }}>
                 <FormControl size="small" sx={{ flex: 2 }}>
@@ -185,7 +182,6 @@ const PurchaseOrders = () => {
               </Box>
             ))}
             <Button onClick={addItem} size="small" sx={{ alignSelf: "flex-start" }}>+ Add Item</Button>
-
             <TextField label="Notes" size="small" fullWidth multiline rows={2}
               value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
           </Box>
@@ -199,7 +195,7 @@ const PurchaseOrders = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Update Status Dialog */}
+      {/* Status Update Dialog */}
       <Dialog open={statusOpen} onClose={() => setStatusOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle fontWeight={600}>Update Order Status</DialogTitle>
         <DialogContent>
@@ -224,4 +220,4 @@ const PurchaseOrders = () => {
   );
 };
 
-export default PurchaseOrders;
+export default WarehousePurchaseOrders;

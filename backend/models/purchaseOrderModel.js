@@ -84,4 +84,6 @@ purchaseOrderSchema.pre("save", async function (next) {
   next();
 });
 
-module.exports = mongoose.model("PurchaseOrder", purchaseOrderSchema);
+module.exports =
+  mongoose.models.PurchaseOrder ||
+  mongoose.model("PurchaseOrder", purchaseOrderSchema);

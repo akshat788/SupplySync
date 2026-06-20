@@ -26,7 +26,7 @@ const SupplierDashboard = () => {
     const fetchOrders = async () => {
       try {
         const { data } = await API.get("/purchase-orders");
-        setOrders(data.orders);
+        setOrders(data.data || []);
       } catch {
         setError("Failed to load purchase orders.");
       } finally {
@@ -36,8 +36,13 @@ const SupplierDashboard = () => {
     fetchOrders();
   }, []);
 
-  const pending = orders.filter((o) => o.status === "Pending").length;
-  const delivered = orders.filter((o) => o.status === "Delivered").length;
+  const pending = (orders || []).filter(
+    (o) => o.status === "Pending"
+  ).length;
+
+  const delivered = (orders || []).filter(
+    (o) => o.status === "Delivered"
+  ).length;
 
   return (
     <Layout>
@@ -110,14 +115,14 @@ const SupplierDashboard = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {orders.length === 0 ? (
+                  {(orders || []).length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} align="center" sx={{ py: 4, color: "text.secondary" }}>
                         No purchase orders yet.
                       </TableCell>
                     </TableRow>
                   ) : (
-                    orders.map((o) => (
+                    (orders || []).map((o) => (
                       <TableRow key={o._id} hover>
                         <TableCell><Chip label={o.poNumber} size="small" /></TableCell>
                         <TableCell>{o.items?.length} item(s)</TableCell>

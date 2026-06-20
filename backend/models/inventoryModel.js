@@ -54,4 +54,6 @@ inventorySchema.virtual("isLowStock").get(function () {
   return this.availableStock <= this.minimumStockLevel;
 });
 
-module.exports = mongoose.model("Inventory", inventorySchema);
+module.exports =
+  mongoose.models.Inventory ||
+  mongoose.model("Inventory", inventorySchema);

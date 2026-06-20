@@ -34,7 +34,7 @@ const createPurchaseOrder = async (req, res) => {
   try {
     const order = await PurchaseOrder.create({
       ...req.body,
-      createdBy: req.user._id,
+      createdBy: req.user ? req.user._id : null,
     });
     res.status(201).json({ message: "Purchase order created successfully", order });
   } catch (error) {
@@ -49,41 +49,73 @@ const updatePurchaseOrderStatus = async (req, res) => {
     const order = await PurchaseOrder.findById(req.params.id);
     if (!order) return res.status(404).json({ message: "Purchase order not found" });
 
+    const previousStatus = order.status;
+
+    if (previousStatus !== status) {
+      switch (status) {
+        case "Shipped":
+          for (const item of order.items) {
+            try {
+              let inventoryItem = await Inventory.findOne({ product: item.product });
+              if (inventoryItem) {
+                inventoryItem.inTransitStock += item.quantity;
+                inventoryItem.lastUpdated = Date.now();
+                await inventoryItem.save();
+              } else {
+                await Inventory.create({
+                  product: item.product,
+                  availableStock: 0,
+                  reservedStock: 0,
+                  inTransitStock: item.quantity,
+                  warehouseLocation: "Main Warehouse",
+                  minimumStockLevel: 10,
+                  maximumStockLevel: 1000,
+                });
+              }
+            } catch (invError) {
+              console.error("Inventory update error (Shipped):", invError.message);
+            }
+          }
+          break;
+
+        case "Delivered":
+          order.deliveredDate = Date.now();
+          for (const item of order.items) {
+            try {
+              let inventoryItem = await Inventory.findOne({ product: item.product });
+              if (inventoryItem) {
+                inventoryItem.availableStock += item.quantity;
+                inventoryItem.inTransitStock = Math.max(
+                  0,
+                  inventoryItem.inTransitStock - item.quantity
+                );
+                inventoryItem.lastUpdated = Date.now();
+                await inventoryItem.save();
+              } else {
+                await Inventory.create({
+                  product: item.product,
+                  availableStock: item.quantity,
+                  reservedStock: 0,
+                  inTransitStock: 0,
+                  warehouseLocation: "Main Warehouse",
+                  minimumStockLevel: 10,
+                  maximumStockLevel: 1000,
+                });
+              }
+            } catch (invError) {
+              console.error("Inventory update error (Delivered):", invError.message);
+            }
+          }
+          break;
+      }
+    }
+
     order.status = status;
-
-    // If delivered → update inventory stock automatically
-    if (status === "Delivered") {
-      order.deliveredDate = Date.now();
-
-      for (const item of order.items) {
-        const inventoryItem = await Inventory.findOne({ product: item.product });
-        if (inventoryItem) {
-          inventoryItem.availableStock += item.quantity;
-          inventoryItem.inTransitStock = Math.max(
-            0,
-            inventoryItem.inTransitStock - item.quantity
-          );
-          inventoryItem.lastUpdated = Date.now();
-          await inventoryItem.save();
-        }
-      }
-    }
-
-    // If shipped → move stock to in-transit
-    if (status === "Shipped") {
-      for (const item of order.items) {
-        const inventoryItem = await Inventory.findOne({ product: item.product });
-        if (inventoryItem) {
-          inventoryItem.inTransitStock += item.quantity;
-          inventoryItem.lastUpdated = Date.now();
-          await inventoryItem.save();
-        }
-      }
-    }
-
     await order.save();
+
     res.status(200).json({ message: `Purchase order marked as ${status}`, order });
   } catch (error) {
+    console.error("updatePurchaseOrderStatus error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

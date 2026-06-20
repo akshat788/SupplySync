@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginSuccess } from "../redux/authSlice";
 import API from "../api/axios";
 import {
@@ -27,7 +27,6 @@ const Login = () => {
       const { data } = await API.post("/auth/login", form);
       dispatch(loginSuccess({ user: data.user, token: data.token }));
 
-      // Redirect based on role
       const role = data.user.role;
       if (role === "admin") navigate("/admin/dashboard");
       else if (role === "supplier") navigate("/supplier/dashboard");
@@ -83,7 +82,8 @@ const Login = () => {
               type="submit" fullWidth variant="contained" size="large"
               disabled={loading}
               sx={{
-                backgroundColor: "#1a1a2e", "&:hover": { backgroundColor: "#0f3460" },
+                backgroundColor: "#1a1a2e",
+                "&:hover": { backgroundColor: "#0f3460" },
                 borderRadius: 2, py: 1.5,
               }}
             >
@@ -91,8 +91,11 @@ const Login = () => {
             </Button>
           </form>
 
-          <Typography variant="caption" color="text.secondary" display="block" textAlign="center" mt={3}>
-            Contact your administrator to get an account.
+          <Typography variant="body2" textAlign="center" mt={3} color="text.secondary">
+            Don't have an account?{" "}
+            <Link to="/register" style={{ color: "#0f3460", fontWeight: 600, textDecoration: "none" }}>
+              Sign Up
+            </Link>
           </Typography>
         </CardContent>
       </Card>

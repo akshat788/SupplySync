@@ -29,6 +29,7 @@ const createProduct = async (req, res) => {
     const product = await Product.create(req.body);
     res.status(201).json({ message: "Product created successfully", product });
   } catch (error) {
+    console.error("CREATE PRODUCT ERROR:", error.message);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

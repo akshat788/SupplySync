@@ -5,6 +5,7 @@ import store from "./redux/store";
 import PrivateRoute from "./components/PrivateRoute";
 
 import Login from "./pages/Login";
+import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Unauthorized from "./pages/Unauthorized";
 import Profile from "./pages/Profile";
@@ -47,7 +48,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Landing />} />
 
           {/* Profile — all roles */}
           <Route path="/admin/profile" element={<PrivateRoute roles={["admin"]}><Profile /></PrivateRoute>} />

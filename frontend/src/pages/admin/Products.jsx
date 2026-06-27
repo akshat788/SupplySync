@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
 
@@ -96,6 +97,17 @@ const Products = () => {
       setForm({ name: "", category: "Electronics", description: "", costPrice: "", sellingPrice: "", unit: "pcs", supplier: "" });
     }
     setOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+    try {
+      await API.delete(`/products/${id}`);
+      setSuccess("Product deleted successfully!");
+      fetchData();
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to delete product.");
+    }
   };
 
   const handleSubmit = async () => {
@@ -197,6 +209,9 @@ const Products = () => {
                           <TableCell>
                             <IconButton size="small" color="primary" onClick={() => handleOpen(p)}>
                               <EditIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton size="small" color="error" onClick={() => handleDelete(p._id)}>
+                              <DeleteIcon fontSize="small" />
                             </IconButton>
                           </TableCell>
                         </TableRow>

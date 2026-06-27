@@ -54,8 +54,8 @@ const Login = () => {
             <Box sx={{ display: "inline-flex", p: 2, borderRadius: "50%", backgroundColor: "#1a1a2e15", mb: 1 }}>
               <LockIcon sx={{ fontSize: 32, color: "#1a1a2e" }} />
             </Box>
-            <Typography variant="h5" fontWeight="bold" color="#1a1a2e">SCM System</Typography>
-            <Typography variant="body2" color="text.secondary" mt={0.5}>Supply Chain Management</Typography>
+            <Typography variant="h5" fontWeight="bold" color="#1a1a2e">SupplySync</Typography>
+            <Typography variant="body2" color="text.secondary" mt={0.5}>Supply Made Easy</Typography>
           </Box>
 
           <Typography variant="h6" fontWeight={600} mb={3} textAlign="center">

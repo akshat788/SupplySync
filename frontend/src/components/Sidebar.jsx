@@ -77,8 +77,8 @@ const Sidebar = ({ onClose }) => {
     }}>
       {/* Logo */}
       <Box sx={{ p: 2, textAlign: "center", borderBottom: "1px solid #ffffff20" }}>
-        <Typography variant="h6" fontWeight="bold" color="#4fc3f7">SCM System</Typography>
-        <Typography variant="caption" color="#ffffff80">Supply Chain Management</Typography>
+        <Typography variant="h6" fontWeight="bold" color="#4fc3f7">SupplySync</Typography>
+        <Typography variant="caption" color="#ffffff80">Supply Made Easy</Typography>
       </Box>
 
       {/* User Info */}

@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
               <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 1 }}>
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" fontWeight="bold" color="#4fc3f7">SCM System</Typography>
+              <Typography variant="h6" fontWeight="bold" color="#4fc3f7">SupplySync</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <NotificationBell />

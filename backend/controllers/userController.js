@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Supplier = require("../models/supplierModel");
 const bcrypt = require("bcryptjs");
 
 const getUsers = async (req, res) => {
@@ -53,6 +54,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Admin resets password
 const updatePassword = async (req, res) => {
   try {
     const { password } = req.body;
@@ -69,7 +71,7 @@ const updatePassword = async (req, res) => {
   }
 };
 
-// Update own profile
+// User updates own profile
 const updateProfile = async (req, res) => {
   try {
     const { name, phone, organization } = req.body;
@@ -85,7 +87,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// Change own password (requires current password)
+// User changes own password (requires current password)
 const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -104,19 +106,54 @@ const changePassword = async (req, res) => {
   }
 };
 
-// Admin creates a new user
+// Admin creates a new user — auto-creates Supplier profile if role is supplier
 const createUser = async (req, res) => {
   try {
     const { name, email, password, role, organization, phone } = req.body;
+
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Name, email and password are required" });
     }
+
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "User with this email already exists" });
-    const user = await User.create({ name, email, password, role: role || "retailer", organization, phone });
+
+    const user = await User.create({
+      name, email, password,
+      role: role || "retailer",
+      organization: organization || "",
+      phone: phone || "",
+    });
+
+    // Auto-create Supplier profile when role is supplier
+    if (role === "supplier") {
+      const supplierExists = await Supplier.findOne({ email });
+      if (!supplierExists) {
+        await Supplier.create({
+          name: organization || name,
+          contactPerson: name,
+          email: email,
+          phone: phone || "",
+          location: "",
+          products: [],
+          performanceScore: 100,
+          onTimeDelivery: 100,
+          qualityScore: 100,
+          isActive: true,
+        });
+      }
+    }
+
     res.status(201).json({
-      message: "User created successfully",
-      user: { _id: user._id, name: user.name, email: user.email, role: user.role },
+      message: `${role === "supplier" ? "Supplier" : "User"} created successfully`,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        organization: user.organization,
+        phone: user.phone,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

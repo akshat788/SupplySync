@@ -64,8 +64,8 @@ const Register = () => {
         <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
           {/* Header */}
           <Box sx={{ textAlign: "center", mb: 3 }}>
-            <Typography variant="h5" fontWeight="bold" color="#1a1a2e">SCM System</Typography>
-            <Typography variant="body2" color="text.secondary" mt={0.5}>Supply Chain Management</Typography>
+            <Typography variant="h5" fontWeight="bold" color="#1a1a2e">SupplySync</Typography>
+            <Typography variant="body2" color="text.secondary" mt={0.5}>Supply Made Easy</Typography>
           </Box>
 
           {/* Retailer Badge */}

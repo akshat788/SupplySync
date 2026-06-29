@@ -213,9 +213,6 @@ const Users = () => {
                   <Select
                     value={createForm.role}
                     label="Role *"
-                    MenuProps={{
-                      style: { zIndex: 1600 },
-                    }}
                     onChange={(e) =>
                       setCreateForm({ ...createForm, role: e.target.value })
                     }

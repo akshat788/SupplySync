@@ -213,6 +213,9 @@ const Users = () => {
                   <Select
                     value={createForm.role}
                     label="Role *"
+                    MenuProps={{
+                      disablePortal: true,
+                    }}
                     onChange={(e) =>
                       setCreateForm({ ...createForm, role: e.target.value })
                     }

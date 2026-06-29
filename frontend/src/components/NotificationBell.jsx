@@ -135,7 +135,7 @@ const NotificationBell = () => {
 
   return (
     <>
-      <IconButton onClick={handleOpen} sx={{ color: "#fff" }}>
+      <IconButton onClick={handleOpen} sx={{ color: "text.secondary" }}>
         <Badge badgeContent={unreadCount} color="error" max={9}>
           <NotificationsIcon />
         </Badge>

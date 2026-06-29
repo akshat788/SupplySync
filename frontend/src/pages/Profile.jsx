@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/authSlice";
 import Layout from "../components/Layout";
 import API from "../api/axios";
+import { getCleanName } from "../utils/sanitize";
 import {
   Box, Card, CardContent, Typography, TextField, Button,
   Alert, Grid, Avatar, Divider, Chip,
@@ -73,23 +74,23 @@ const Profile = () => {
 
   return (
     <Layout>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">My Profile</Typography>
-        <Typography variant="body2" color="text.secondary">Manage your account information</Typography>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ fontFamily: "'Outfit', sans-serif" }}>My Profile</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Manage your account information</Typography>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")}>{error}</Alert>}
-      {success && <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess("")}>{success}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 2.5 }} onClose={() => setError("")}>{error}</Alert>}
+      {success && <Alert severity="success" sx={{ mb: 2.5 }} onClose={() => setSuccess("")}>{success}</Alert>}
 
       <Grid container spacing={3}>
         {/* Profile Card */}
         <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", textAlign: "center" }}>
+          <Card sx={{ textAlign: "center" }}>
             <CardContent sx={{ p: 4 }}>
-              <Avatar sx={{ width: 80, height: 80, fontSize: 32, bgcolor: "#1a1a2e", mx: "auto", mb: 2 }}>
-                {user?.name?.charAt(0).toUpperCase()}
+              <Avatar sx={{ width: 80, height: 80, fontSize: 32, bgcolor: "secondary.main", mx: "auto", mb: 2 }}>
+                {getCleanName(user)?.charAt(0).toUpperCase()}
               </Avatar>
-              <Typography variant="h6" fontWeight={600}>{user?.name}</Typography>
+              <Typography variant="h6" fontWeight={600}>{getCleanName(user)}</Typography>
               <Typography variant="body2" color="text.secondary" mb={1}>{user?.email}</Typography>
               <Chip
                 label={user?.role?.replace("_", " ")}

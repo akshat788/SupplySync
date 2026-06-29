@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import API from "../../api/axios";
+import { getCleanName } from "../../utils/sanitize";
 import {
   Box, Grid, Card, CardContent, Typography,
   Chip, CircularProgress, Alert, Table, TableBody,
@@ -75,8 +76,8 @@ const SupplierDashboard = () => {
   return (
     <Layout>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">
-          Welcome, {user?.name} 👋
+        <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ fontFamily: "'Outfit', sans-serif" }}>
+          Welcome, {getCleanName(user)} 👋
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {user?.organization || "Manage your orders and shipments"}
@@ -91,56 +92,64 @@ const SupplierDashboard = () => {
         <>
           {/* Stat Cards */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={6} md={3}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Card>
+                <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Box>
-                      <Typography variant="body2" color="text.secondary">Total Revenue</Typography>
-                      <Typography variant="h5" fontWeight="bold" color="#66bb6a">
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography variant="body2" color="text.secondary" fontWeight={500}>Total Revenue</Typography>
+                      <Typography variant="h5" fontWeight="bold" color="#10b981" sx={{ mt: 0.5 }}>
                         ₹{totalRevenue.toLocaleString()}
                       </Typography>
                     </Box>
-                    <AttachMoneyIcon sx={{ fontSize: 36, color: "#66bb6a" }} />
+                    <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#10b98115", color: "#10b981" }}>
+                      <AttachMoneyIcon sx={{ fontSize: 28 }} />
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6} md={3}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Card>
+                <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Box>
-                      <Typography variant="body2" color="text.secondary">Products Listed</Typography>
-                      <Typography variant="h4" fontWeight="bold" color="#4fc3f7">{products.length}</Typography>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography variant="body2" color="text.secondary" fontWeight={500}>Products Listed</Typography>
+                      <Typography variant="h5" fontWeight="bold" color="#4f46e5" sx={{ mt: 0.5 }}>{products.length}</Typography>
                     </Box>
-                    <CategoryIcon sx={{ fontSize: 36, color: "#4fc3f7" }} />
+                    <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#4f46e515", color: "#4f46e5" }}>
+                      <CategoryIcon sx={{ fontSize: 28 }} />
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6} md={3}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Card>
+                <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Box>
-                      <Typography variant="body2" color="text.secondary">Active POs</Typography>
-                      <Typography variant="h4" fontWeight="bold" color="#ffb74d">{active}</Typography>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography variant="body2" color="text.secondary" fontWeight={500}>Active POs</Typography>
+                      <Typography variant="h5" fontWeight="bold" color="#f59e0b" sx={{ mt: 0.5 }}>{active}</Typography>
                     </Box>
-                    <LocalShippingIcon sx={{ fontSize: 36, color: "#ffb74d" }} />
+                    <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#f59e0b15", color: "#f59e0b" }}>
+                      <LocalShippingIcon sx={{ fontSize: 28 }} />
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6} md={3}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Card>
+                <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Box>
-                      <Typography variant="body2" color="text.secondary">Due This Week</Typography>
-                      <Typography variant="h4" fontWeight="bold" color="#ce93d8">{upcoming}</Typography>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography variant="body2" color="text.secondary" fontWeight={500}>Due This Week</Typography>
+                      <Typography variant="h5" fontWeight="bold" color="#818cf8" sx={{ mt: 0.5 }}>{upcoming}</Typography>
                     </Box>
-                    <ScheduleIcon sx={{ fontSize: 36, color: "#ce93d8" }} />
+                    <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#818cf815", color: "#818cf8" }}>
+                      <ScheduleIcon sx={{ fontSize: 28 }} />
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>
@@ -149,31 +158,31 @@ const SupplierDashboard = () => {
 
           <Grid container spacing={3} sx={{ mb: 3 }}>
             {/* Performance Rating */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+            <Grid item xs={12} md={5} lg={4}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Performance Rating</Typography>
                   <Box sx={{ textAlign: "center", py: 2 }}>
-                    <StarIcon sx={{ fontSize: 48, color: "#ffa726" }} />
-                    <Typography variant="h3" fontWeight="bold" color="#1a1a2e">{performanceScore}%</Typography>
+                    <StarIcon sx={{ fontSize: 40, color: "#f59e0b" }} />
+                    <Typography variant="h4" fontWeight="bold" color="text.primary">{performanceScore}%</Typography>
                     <Chip label={performanceScore >= 90 ? "Excellent" : performanceScore >= 70 ? "Good" : "Needs Improvement"}
                       color={performanceScore >= 90 ? "success" : performanceScore >= 70 ? "warning" : "error"}
-                      sx={{ mt: 1 }} />
+                      sx={{ mt: 1.5 }} />
                   </Box>
                   <LinearProgress variant="determinate" value={performanceScore}
-                    sx={{ height: 10, borderRadius: 5, mt: 1,
+                    sx={{ height: 8, borderRadius: 5, mt: 1, backgroundColor: "#f1f5f9",
                       "& .MuiLinearProgress-bar": {
-                        backgroundColor: performanceScore >= 90 ? "#66bb6a" : performanceScore >= 70 ? "#ffa726" : "#ef5350"
+                        backgroundColor: performanceScore >= 90 ? "#10b981" : performanceScore >= 70 ? "#f59e0b" : "#ef4444"
                       }
                     }} />
-                  <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                  <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
                     {[
-                      { label: "Pending", value: pending, color: "#ffb74d" },
-                      { label: "Active", value: active, color: "#4fc3f7" },
-                      { label: "Delivered", value: delivered, color: "#66bb6a" },
+                      { label: "Pending", value: pending, color: "#f59e0b" },
+                      { label: "Active", value: active, color: "#06b6d4" },
+                      { label: "Delivered", value: delivered, color: "#10b981" },
                     ].map(item => (
                       <Box key={item.label} sx={{ textAlign: "center" }}>
-                        <Typography variant="h5" fontWeight="bold" color={item.color}>{item.value}</Typography>
+                        <Typography variant="h6" fontWeight="bold" color={item.color}>{item.value}</Typography>
                         <Typography variant="caption" color="text.secondary">{item.label}</Typography>
                       </Box>
                     ))}
@@ -182,9 +191,9 @@ const SupplierDashboard = () => {
               </Card>
             </Grid>
 
-            {/* Recent Activity */}
-            <Grid item xs={12} md={8}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+            {/* Recent Purchase Orders */}
+            <Grid item xs={12} md={7} lg={8}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Recent Purchase Orders</Typography>
                   {orders.length === 0 ? (
@@ -192,7 +201,7 @@ const SupplierDashboard = () => {
                   ) : (
                     <TableContainer component={Paper} elevation={0}>
                       <Table size="small">
-                        <TableHead sx={{ backgroundColor: "#f8f9fa" }}>
+                        <TableHead sx={{ backgroundColor: "#f8fafc" }}>
                           <TableRow>
                             {["PO Number", "Items", "Total", "Status", "Date"].map(h => (
                               <TableCell key={h} sx={{ fontWeight: 600 }}>{h}</TableCell>
@@ -202,7 +211,7 @@ const SupplierDashboard = () => {
                         <TableBody>
                           {orders.slice(0, 5).map(o => (
                             <TableRow key={o._id} hover>
-                              <TableCell>{o.poNumber}</TableCell>
+                              <TableCell sx={{ fontWeight: 500 }}>{o.poNumber}</TableCell>
                               <TableCell>{o.items?.length} item(s)</TableCell>
                               <TableCell>₹{o.totalAmount?.toLocaleString()}</TableCell>
                               <TableCell>

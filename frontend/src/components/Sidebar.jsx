@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/authSlice";
+import { getCleanName } from "../utils/sanitize";
+import logo from "../assets/logo.png";
 import {
   List, ListItem, ListItemButton, ListItemIcon,
   ListItemText, Typography, Box, Divider, Avatar,
@@ -72,48 +74,59 @@ const Sidebar = ({ onClose }) => {
 
   return (
     <Box sx={{
-      width: 240, height: "100vh", backgroundColor: "#1a1a2e",
+      width: 240, height: "100vh",
+      background: "linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%)",
       color: "#fff", display: "flex", flexDirection: "column",
+      borderRight: "1px solid rgba(255, 255, 255, 0.08)",
     }}>
       {/* Logo */}
-      <Box sx={{ p: 2, textAlign: "center", borderBottom: "1px solid #ffffff20" }}>
-        <Typography variant="h6" fontWeight="bold" color="#4fc3f7">SupplySync</Typography>
-        <Typography variant="caption" color="#ffffff80">Supply Made Easy</Typography>
+      <Box sx={{ p: 2.5, display: "flex", alignItems: "center", justifyContent: "center", gap: 1, borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}>
+        <img src={logo} alt="SupplySync" style={{ height: 28, filter: "drop-shadow(0 0 6px rgba(99,102,241,0.4))" }} />
+        <Box sx={{ textAlign: "left" }}>
+          <Typography variant="h6" fontWeight="bold" color="secondary.light" sx={{ fontFamily: "'Outfit', sans-serif", letterSpacing: "0.5px", lineHeight: 1.2 }}>
+            SupplySync
+          </Typography>
+          <Typography variant="caption" color="rgba(255, 255, 255, 0.5)" sx={{ display: "block", fontSize: "10px" }}>Supply Made Easy</Typography>
+        </Box>
       </Box>
 
       {/* User Info */}
-      <Box sx={{ p: 2, display: "flex", alignItems: "center", gap: 1, borderBottom: "1px solid #ffffff20" }}>
-        <Avatar sx={{ bgcolor: "#4fc3f7", width: 36, height: 36, fontSize: 14 }}>
-          {user?.name?.charAt(0).toUpperCase()}
+      <Box sx={{ p: 2, display: "flex", alignItems: "center", gap: 1.5, borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}>
+        <Avatar sx={{ bgcolor: "secondary.main", color: "#fff", width: 38, height: 38, fontSize: 15, fontWeight: "bold" }}>
+          {getCleanName(user)?.charAt(0).toUpperCase()}
         </Avatar>
-        <Box>
-          <Typography variant="body2" fontWeight="bold" color="#fff" noWrap>{user?.name}</Typography>
-          <Typography variant="caption" color="#ffffff80" sx={{ textTransform: "capitalize" }}>
+        <Box sx={{ minWidth: 0, flexGrow: 1 }}>
+          <Typography variant="body2" fontWeight="bold" color="#fff" sx={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+            {getCleanName(user)}
+          </Typography>
+          <Typography variant="caption" color="rgba(255, 255, 255, 0.5)" sx={{ textTransform: "capitalize", display: "block" }}>
             {user?.role?.replace("_", " ")}
           </Typography>
         </Box>
       </Box>
 
       {/* Menu Items */}
-      <List sx={{ flexGrow: 1, pt: 1, overflowY: "auto" }}>
+      <List sx={{ flexGrow: 1, pt: 2, px: 1, overflowY: "auto" }}>
         {items.map(item => {
           const isActive = location.pathname === item.path;
           return (
-            <ListItem key={item.text} disablePadding>
+            <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
               <ListItemButton onClick={() => handleNavigate(item.path)}
                 sx={{
-                  mx: 1, borderRadius: 2, mb: 0.5,
-                  backgroundColor: isActive ? "#4fc3f720" : "transparent",
-                  borderLeft: isActive ? "3px solid #4fc3f7" : "3px solid transparent",
-                  "&:hover": { backgroundColor: "#4fc3f710" },
+                  borderRadius: "8px",
+                  py: 1, px: 1.5,
+                  backgroundColor: isActive ? "rgba(99, 102, 241, 0.15)" : "transparent",
+                  borderLeft: isActive ? "3px solid #818cf8" : "3px solid transparent",
+                  transition: "all 0.2s ease",
+                  "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.05)" },
                 }}>
-                <ListItemIcon sx={{ color: isActive ? "#4fc3f7" : "#ffffff80", minWidth: 36 }}>
+                <ListItemIcon sx={{ color: isActive ? "#a5b4fc" : "rgba(255, 255, 255, 0.5)", minWidth: 32 }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText primary={item.text}
                   primaryTypographyProps={{
-                    fontSize: 14,
-                    color: isActive ? "#4fc3f7" : "#ffffffcc",
+                    fontSize: 13.5,
+                    color: isActive ? "#a5b4fc" : "rgba(255, 255, 255, 0.8)",
                     fontWeight: isActive ? 600 : 400,
                   }} />
               </ListItemButton>
@@ -122,15 +135,15 @@ const Sidebar = ({ onClose }) => {
         })}
       </List>
 
-      <Divider sx={{ borderColor: "#ffffff20" }} />
+      <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.08)" }} />
 
       {/* Logout */}
-      <List>
+      <List sx={{ px: 1, py: 1.5 }}>
         <ListItem disablePadding>
           <ListItemButton onClick={handleLogout}
-            sx={{ mx: 1, borderRadius: 2, "&:hover": { backgroundColor: "#ff525220" } }}>
-            <ListItemIcon sx={{ color: "#ff5252", minWidth: 36 }}><LogoutIcon /></ListItemIcon>
-            <ListItemText primary="Logout" primaryTypographyProps={{ fontSize: 14, color: "#ff5252" }} />
+            sx={{ borderRadius: "8px", py: 1, px: 1.5, "&:hover": { backgroundColor: "rgba(239, 68, 68, 0.15)" } }}>
+            <ListItemIcon sx={{ color: "#f87171", minWidth: 32 }}><LogoutIcon /></ListItemIcon>
+            <ListItemText primary="Logout" primaryTypographyProps={{ fontSize: 13.5, color: "#f87171", fontWeight: 500 }} />
           </ListItemButton>
         </ListItem>
       </List>

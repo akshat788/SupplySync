@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import API from "../../api/axios";
+import { getCleanName } from "../../utils/sanitize";
 import {
   Box, Grid, Card, CardContent, Typography,
   Chip, CircularProgress, Alert, Table, TableBody,
@@ -64,65 +65,75 @@ const WarehouseDashboard = () => {
   return (
     <Layout>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">Welcome, {user?.name} 👋</Typography>
-        <Typography variant="body2" color="text.secondary">Warehouse operations overview</Typography>
+        <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ fontFamily: "'Outfit', sans-serif" }}>
+          Welcome, {getCleanName(user)} 👋
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Warehouse operations overview</Typography>
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
       {/* Stat Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Total Products</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#81c784">{inventory.length}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Total Products</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#4f46e5" sx={{ mt: 0.5 }}>{inventory.length}</Typography>
                 </Box>
-                <InventoryIcon sx={{ fontSize: 40, color: "#81c784" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#4f46e515", color: "#4f46e5" }}>
+                  <InventoryIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Incoming Shipments</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#4fc3f7">{incomingShipments}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Incoming Shipments</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#06b6d4" sx={{ mt: 0.5 }}>{incomingShipments}</Typography>
                   <Typography variant="caption" color="text.secondary">POs in transit</Typography>
                 </Box>
-                <InboxIcon sx={{ fontSize: 40, color: "#4fc3f7" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#06b6d415", color: "#06b6d4" }}>
+                  <InboxIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Orders To Pack</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#ffb74d">{pendingOrders}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Orders To Pack</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#f59e0b" sx={{ mt: 0.5 }}>{pendingOrders}</Typography>
                   <Typography variant="caption" color="text.secondary">Pending fulfillment</Typography>
                 </Box>
-                <AssignmentIcon sx={{ fontSize: 40, color: "#ffb74d" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#f59e0b15", color: "#f59e0b" }}>
+                  <AssignmentIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Low Stock Items</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#ef5350">{lowStockCount}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Low Stock Items</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#ef4444" sx={{ mt: 0.5 }}>{lowStockCount}</Typography>
                   <Typography variant="caption" color="text.secondary">{outOfStockCount} out of stock</Typography>
                 </Box>
-                <WarningIcon sx={{ fontSize: 40, color: "#ef5350" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#ef444415", color: "#ef4444" }}>
+                  <WarningIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
@@ -131,35 +142,35 @@ const WarehouseDashboard = () => {
 
       <Grid container spacing={3} sx={{ mb: 3 }}>
         {/* Inventory Health */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+        <Grid item xs={12} md={5} lg={4}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Inventory Health</Typography>
-              <Box sx={{ mb: 2 }}>
+              <Box sx={{ mb: 3 }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                   <Typography variant="body2" color="text.secondary">Healthy Stock</Typography>
-                  <Typography variant="body2" fontWeight={600} color="#66bb6a">{healthPct}%</Typography>
+                  <Typography variant="body2" fontWeight={600} color="#10b981">{healthPct}%</Typography>
                 </Box>
                 <LinearProgress variant="determinate" value={healthPct}
-                  sx={{ height: 10, borderRadius: 5, backgroundColor: "#ffcdd2",
-                    "& .MuiLinearProgress-bar": { backgroundColor: "#66bb6a", borderRadius: 5 } }} />
+                  sx={{ height: 8, borderRadius: 5, backgroundColor: "#fee2e2",
+                    "& .MuiLinearProgress-bar": { backgroundColor: "#10b981", borderRadius: 5 } }} />
               </Box>
               <Grid container spacing={1}>
                 <Grid item xs={4}>
-                  <Box sx={{ textAlign: "center", p: 1.5, borderRadius: 2, backgroundColor: "#e8f5e9" }}>
-                    <Typography variant="h6" fontWeight="bold" color="#66bb6a">{healthyCount}</Typography>
+                  <Box sx={{ textAlign: "center", p: 1, borderRadius: 2, backgroundColor: "#ecfdf5" }}>
+                    <Typography variant="h6" fontWeight="bold" color="#10b981">{healthyCount}</Typography>
                     <Typography variant="caption" color="text.secondary">Healthy</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Box sx={{ textAlign: "center", p: 1.5, borderRadius: 2, backgroundColor: "#fff3e0" }}>
-                    <Typography variant="h6" fontWeight="bold" color="#ffa726">{lowStockCount}</Typography>
+                  <Box sx={{ textAlign: "center", p: 1, borderRadius: 2, backgroundColor: "#fffbeb" }}>
+                    <Typography variant="h6" fontWeight="bold" color="#f59e0b">{lowStockCount}</Typography>
                     <Typography variant="caption" color="text.secondary">Low</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Box sx={{ textAlign: "center", p: 1.5, borderRadius: 2, backgroundColor: "#ffebee" }}>
-                    <Typography variant="h6" fontWeight="bold" color="#ef5350">{outOfStockCount}</Typography>
+                  <Box sx={{ textAlign: "center", p: 1, borderRadius: 2, backgroundColor: "#fef2f2" }}>
+                    <Typography variant="h6" fontWeight="bold" color="#ef4444">{outOfStockCount}</Typography>
                     <Typography variant="caption" color="text.secondary">Out</Typography>
                   </Box>
                 </Grid>
@@ -169,8 +180,8 @@ const WarehouseDashboard = () => {
         </Grid>
 
         {/* Warehouse Activity Feed */}
-        <Grid item xs={12} md={8}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+        <Grid item xs={12} md={7} lg={8}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Warehouse Activity</Typography>
               {transactions.length === 0 ? (

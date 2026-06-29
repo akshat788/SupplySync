@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import API from "../../api/axios";
+import { getCleanName } from "../../utils/sanitize";
 import {
   Box, Grid, Card, CardContent, Typography, Button,
   Chip, CircularProgress, Alert, Table, TableBody,
@@ -70,10 +71,10 @@ const RetailerDashboard = () => {
   return (
     <Layout>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">
-          Welcome, {user?.name} 👋
+        <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ fontFamily: "'Outfit', sans-serif" }}>
+          Welcome, {getCleanName(user)} 👋
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           {user?.organization || "Manage your orders and track deliveries."}
         </Typography>
       </Box>
@@ -82,56 +83,64 @@ const RetailerDashboard = () => {
 
       {/* Main Stats */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Total Orders</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#4fc3f7">{orders.length}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Total Orders</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#06b6d4" sx={{ mt: 0.5 }}>{orders.length}</Typography>
                 </Box>
-                <ShoppingCartIcon sx={{ fontSize: { xs: 28, sm: 36 }, color: "#4fc3f7" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#06b6d415", color: "#06b6d4" }}>
+                  <ShoppingCartIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Pending</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#ffb74d">{pendingCount}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Pending</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#f59e0b" sx={{ mt: 0.5 }}>{pendingCount}</Typography>
                 </Box>
-                <PendingIcon sx={{ fontSize: { xs: 28, sm: 36 }, color: "#ffb74d" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#f59e0b15", color: "#f59e0b" }}>
+                  <PendingIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Delivered</Typography>
-                  <Typography variant="h4" fontWeight="bold" color="#81c784">{deliveredCount}</Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Delivered</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#10b981" sx={{ mt: 0.5 }}>{deliveredCount}</Typography>
                 </Box>
-                <CheckCircleIcon sx={{ fontSize: { xs: 28, sm: 36 }, color: "#81c784" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#10b98115", color: "#10b981" }}>
+                  <CheckCircleIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6} md={3}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card>
+            <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">Total Spending</Typography>
-                  <Typography variant="h5" fontWeight="bold" color="#66bb6a">
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" fontWeight={500}>Total Spending</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="#10b981" sx={{ mt: 0.5 }}>
                     ₹{totalSpending.toLocaleString()}
                   </Typography>
                 </Box>
-                <AttachMoneyIcon sx={{ fontSize: { xs: 28, sm: 36 }, color: "#66bb6a" }} />
+                <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: "#10b98115", color: "#10b981" }}>
+                  <AttachMoneyIcon sx={{ fontSize: 28 }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
@@ -140,8 +149,8 @@ const RetailerDashboard = () => {
 
       {/* Quick Stats */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={6} lg={4}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Quick Stats</Typography>
               {[
@@ -149,7 +158,7 @@ const RetailerDashboard = () => {
                 { label: "Average Order Value", value: `₹${avgOrderValue.toLocaleString()}` },
                 { label: "Last Delivery", value: lastDelivery ? new Date(lastDelivery.updatedAt).toLocaleDateString() : "None yet" },
               ].map(item => (
-                <Box key={item.label} sx={{ display: "flex", justifyContent: "space-between", py: 1, borderBottom: "1px solid #f0f0f0" }}>
+                <Box key={item.label} sx={{ display: "flex", justifyContent: "space-between", py: 1.5, borderBottom: "1px solid #f1f5f9" }}>
                   <Typography variant="body2" color="text.secondary">{item.label}</Typography>
                   <Typography variant="body2" fontWeight={600}>{item.value}</Typography>
                 </Box>
@@ -159,18 +168,18 @@ const RetailerDashboard = () => {
         </Grid>
 
         {/* Recent Activity */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={6} lg={4}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Recent Activity</Typography>
               {recentActivity.length === 0 ? (
                 <Typography color="text.secondary" variant="body2">No activity yet.</Typography>
               ) : (
                 recentActivity.map((item, i) => (
-                  <Box key={i} sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, py: 1, borderBottom: "1px solid #f0f0f0" }}>
+                  <Box key={i} sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, py: 1.5, borderBottom: "1px solid #f1f5f9" }}>
                     <Box sx={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: item.color, mt: 0.8, flexShrink: 0 }} />
-                    <Box>
-                      <Typography variant="body2">{item.text}</Typography>
+                    <Box sx={{ minWidth: 0, flexGrow: 1 }}>
+                      <Typography variant="body2" noWrap sx={{ textOverflow: "ellipsis", overflow: "hidden" }}>{item.text}</Typography>
                       <Typography variant="caption" color="text.secondary">{item.time}</Typography>
                     </Box>
                   </Box>
@@ -181,15 +190,15 @@ const RetailerDashboard = () => {
         </Grid>
 
         {/* Last Delivery */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={12} lg={4}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Last Delivery</Typography>
               {lastDelivery ? (
                 <Box>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                    <LocalShippingIcon sx={{ color: "#66bb6a" }} />
-                    <Typography variant="body1" fontWeight={600} color="#66bb6a">Delivered</Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2.5 }}>
+                    <LocalShippingIcon sx={{ color: "#10b981" }} />
+                    <Typography variant="body1" fontWeight={600} color="#10b981">Delivered</Typography>
                   </Box>
                   {[
                     { label: "Order #", value: lastDelivery.orderNumber },
@@ -197,15 +206,15 @@ const RetailerDashboard = () => {
                     { label: "Amount", value: `₹${lastDelivery.totalAmount?.toLocaleString()}` },
                     { label: "Date", value: new Date(lastDelivery.updatedAt).toLocaleDateString() },
                   ].map(item => (
-                    <Box key={item.label} sx={{ display: "flex", justifyContent: "space-between", py: 0.5 }}>
+                    <Box key={item.label} sx={{ display: "flex", justifyContent: "space-between", py: 1, borderBottom: "1px solid #f1f5f9" }}>
                       <Typography variant="body2" color="text.secondary">{item.label}</Typography>
-                      <Typography variant="body2" fontWeight={500}>{item.value}</Typography>
+                      <Typography variant="body2" fontWeight={600}>{item.value}</Typography>
                     </Box>
                   ))}
                 </Box>
               ) : (
-                <Box sx={{ textAlign: "center", py: 3 }}>
-                  <LocalShippingIcon sx={{ fontSize: 48, color: "#e0e0e0" }} />
+                <Box sx={{ textAlign: "center", py: 4 }}>
+                  <LocalShippingIcon sx={{ fontSize: 40, color: "#cbd5e1" }} />
                   <Typography variant="body2" color="text.secondary" mt={1}>No deliveries yet</Typography>
                 </Box>
               )}
@@ -215,13 +224,13 @@ const RetailerDashboard = () => {
       </Grid>
 
       {/* Recent Orders Table */}
-      <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+      <Card>
         <CardContent>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2.5 }}>
             <Typography variant="h6" fontWeight={600}>Recent Orders</Typography>
             <Button variant="contained" startIcon={<AddIcon />}
               onClick={() => navigate("/retailer/products")}
-              sx={{ backgroundColor: "#1a1a2e", "&:hover": { backgroundColor: "#0f3460" }, borderRadius: 2 }}>
+              sx={{ backgroundColor: "secondary.main", "&:hover": { backgroundColor: "secondary.dark" } }}>
               Shop Now
             </Button>
           </Box>
@@ -230,7 +239,7 @@ const RetailerDashboard = () => {
           ) : (
             <TableContainer component={Paper} elevation={0}>
               <Table>
-                <TableHead sx={{ backgroundColor: "#f8f9fa" }}>
+                <TableHead sx={{ backgroundColor: "#f8fafc" }}>
                   <TableRow>
                     {["Order #", "Items", "Total", "Status", "Date"].map(h => (
                       <TableCell key={h} sx={{ fontWeight: 600 }}>{h}</TableCell>
@@ -247,7 +256,7 @@ const RetailerDashboard = () => {
                   ) : (
                     orders.slice(0, 5).map(order => (
                       <TableRow key={order._id} hover>
-                        <TableCell>{order.orderNumber}</TableCell>
+                        <TableCell sx={{ fontWeight: 500 }}>{order.orderNumber}</TableCell>
                         <TableCell>{order.items?.length} item(s)</TableCell>
                         <TableCell>₹{order.totalAmount?.toLocaleString()}</TableCell>
                         <TableCell>

@@ -6,6 +6,7 @@ import {
   Typography, Alert, CircularProgress, Grid,
 } from "@mui/material";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import logo from "../assets/logo.png";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -57,77 +58,87 @@ const Register = () => {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+      background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)",
       p: 2,
     }}>
-      <Card sx={{ width: "100%", maxWidth: 480, borderRadius: 3, boxShadow: "0 20px 60px rgba(0,0,0,0.4)" }}>
-        <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+      <Card sx={{
+        width: "100%",
+        maxWidth: 480,
+        borderRadius: "20px",
+        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+      }}>
+        <CardContent sx={{ p: { xs: 3.5, sm: 4.5 } }}>
           {/* Header */}
           <Box sx={{ textAlign: "center", mb: 3 }}>
-            <Typography variant="h5" fontWeight="bold" color="#1a1a2e">SupplySync</Typography>
-            <Typography variant="body2" color="text.secondary" mt={0.5}>Supply Made Easy</Typography>
+            <img src={logo} alt="SupplySync" style={{ height: 50, marginBottom: 12, filter: "drop-shadow(0 0 10px rgba(99,102,241,0.4))" }} />
+            <Typography variant="h5" fontWeight="bold" color="primary.main" sx={{ fontFamily: "'Outfit', sans-serif", letterSpacing: "0.5px" }}>SupplySync</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Supply Made Easy</Typography>
           </Box>
 
           {/* Retailer Badge */}
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1,
-            mb: 3, p: 1.5, backgroundColor: "#e8f5e9", borderRadius: 2 }}>
-            <StorefrontIcon sx={{ color: "#66bb6a" }} />
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5,
+            mb: 3.5, p: 2, backgroundColor: "#ecfdf5", borderRadius: "12px" }}>
+            <StorefrontIcon sx={{ color: "success.main", fontSize: 24 }} />
             <Box>
-              <Typography variant="body2" fontWeight={600} color="#66bb6a">Retailer Registration</Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="body2" fontWeight={600} color="success.dark">Retailer Registration</Typography>
+              <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.2, lineHeight: 1.2 }}>
                 For Supplier & Warehouse accounts, contact your administrator
               </Typography>
             </Box>
           </Box>
 
-          <Typography variant="h6" fontWeight={600} mb={3} textAlign="center">
+          <Typography variant="subtitle1" fontWeight={600} mb={3} textAlign="center" color="text.primary">
             Create Retailer Account
           </Typography>
 
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-          {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+          {error && <Alert severity="error" sx={{ mb: 2.5 }}>{error}</Alert>}
+          {success && <Alert severity="success" sx={{ mb: 2.5 }}>{success}</Alert>}
 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField fullWidth label="Full Name *" name="name" size="small"
+                <TextField fullWidth label="Full Name *" name="name"
                   value={form.name} onChange={handleChange} required />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Email *" name="email" type="email" size="small"
+                <TextField fullWidth label="Email *" name="email" type="email"
                   value={form.email} onChange={handleChange} required />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Organization" name="organization" size="small"
+                <TextField fullWidth label="Organization" name="organization"
                   value={form.organization} onChange={handleChange} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Phone" name="phone" size="small"
+                <TextField fullWidth label="Phone" name="phone"
                   value={form.phone} onChange={handleChange} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Password *" name="password" type="password" size="small"
+                <TextField fullWidth label="Password *" name="password" type="password"
                   value={form.password} onChange={handleChange} required />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField fullWidth label="Confirm Password *" name="confirmPassword"
-                  type="password" size="small"
+                  type="password"
                   value={form.confirmPassword} onChange={handleChange} required />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ mt: 1 }}>
                 <Button type="submit" fullWidth variant="contained" size="large"
                   disabled={loading}
-                  sx={{ backgroundColor: "#1a1a2e", "&:hover": { backgroundColor: "#0f3460" },
-                    borderRadius: 2, py: 1.5 }}>
+                  sx={{
+                    backgroundColor: "secondary.main",
+                    "&:hover": { backgroundColor: "secondary.dark" },
+                    py: 1.5,
+                  }}>
                   {loading ? <CircularProgress size={24} color="inherit" /> : "Create Account"}
                 </Button>
               </Grid>
             </Grid>
           </form>
 
-          <Typography variant="body2" textAlign="center" mt={3} color="text.secondary">
+          <Typography variant="body2" textAlign="center" mt={3.5} color="text.secondary">
             Already have an account?{" "}
-            <Link to="/login" style={{ color: "#0f3460", fontWeight: 600, textDecoration: "none" }}>
+            <Link to="/login" style={{ color: "#4f46e5", fontWeight: 600, textDecoration: "none" }}>
               Sign In
             </Link>
           </Typography>

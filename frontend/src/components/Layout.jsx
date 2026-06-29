@@ -9,6 +9,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Sidebar from "./Sidebar";
 import NotificationBell from "./NotificationBell";
+import { getCleanName } from "../utils/sanitize";
+import logo from "../assets/logo.png";
 
 const DRAWER_WIDTH = 240;
 
@@ -34,23 +36,31 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", backgroundColor: "#f0f2f5" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", backgroundColor: "background.default" }}>
       {/* Mobile AppBar */}
       {isMobile && (
-        <AppBar position="fixed" sx={{ backgroundColor: "#1a1a2e", zIndex: theme.zIndex.drawer + 1 }}>
+        <AppBar position="fixed" sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
+          boxShadow: "none",
+          borderBottom: "1px solid #e2e8f0",
+        }}>
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 1 }}>
+              <IconButton color="default" edge="start" onClick={handleDrawerToggle} sx={{ mr: 1, color: "text.primary" }}>
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" fontWeight="bold" color="#4fc3f7">SupplySync</Typography>
+              <img src={logo} alt="SupplySync" style={{ height: 26, marginRight: 8, filter: "drop-shadow(0 0 6px rgba(99,102,241,0.3))" }} />
+              <Typography variant="h6" fontWeight="bold" color="primary.main" sx={{ fontFamily: "'Outfit', sans-serif" }}>
+                SupplySync
+              </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <NotificationBell />
               <Tooltip title="My Profile">
-                <IconButton onClick={handleProfileClick} sx={{ color: "#fff" }}>
-                  <Avatar sx={{ width: 30, height: 30, fontSize: 13, bgcolor: "#4fc3f7" }}>
-                    {user?.name?.charAt(0).toUpperCase()}
+                <IconButton onClick={handleProfileClick}>
+                  <Avatar sx={{ width: 32, height: 32, fontSize: 13, bgcolor: "secondary.main", color: "#fff", fontWeight: "bold" }}>
+                    {getCleanName(user)?.charAt(0).toUpperCase()}
                   </Avatar>
                 </IconButton>
               </Tooltip>
@@ -62,19 +72,20 @@ const Layout = ({ children }) => {
       {/* Desktop top bar (slim) */}
       {!isMobile && (
         <AppBar position="fixed" sx={{
-          backgroundColor: "#1a1a2e",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
           zIndex: theme.zIndex.drawer + 1,
           width: `calc(100% - ${DRAWER_WIDTH}px)`,
           ml: `${DRAWER_WIDTH}px`,
           boxShadow: "none",
-          borderBottom: "1px solid #ffffff10",
+          borderBottom: "1px solid #e2e8f0",
         }}>
-          <Toolbar sx={{ justifyContent: "flex-end", minHeight: "48px !important" }}>
+          <Toolbar sx={{ justifyContent: "flex-end", minHeight: "56px !important" }}>
             <NotificationBell />
             <Tooltip title="My Profile">
-              <IconButton onClick={handleProfileClick} sx={{ color: "#fff", ml: 1 }}>
-                <Avatar sx={{ width: 30, height: 30, fontSize: 13, bgcolor: "#4fc3f7" }}>
-                  {user?.name?.charAt(0).toUpperCase()}
+              <IconButton onClick={handleProfileClick} sx={{ ml: 1 }}>
+                <Avatar sx={{ width: 32, height: 32, fontSize: 13, bgcolor: "secondary.main", color: "#fff", fontWeight: "bold" }}>
+                  {getCleanName(user)?.charAt(0).toUpperCase()}
                 </Avatar>
               </IconButton>
             </Tooltip>
@@ -106,8 +117,8 @@ const Layout = ({ children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: { xs: 2, sm: 3 },
-          mt: isMobile ? 8 : 6,
+          p: { xs: 3, sm: 4, md: 5 },
+          mt: isMobile ? 8 : 7,
           overflow: "auto",
           minWidth: 0,
         }}

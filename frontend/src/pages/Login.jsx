@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import logo from "../assets/logo.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -44,58 +45,67 @@ const Login = () => {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+      background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)",
       p: 2,
     }}>
-      <Card sx={{ width: "100%", maxWidth: 420, borderRadius: 3, boxShadow: "0 20px 60px rgba(0,0,0,0.4)" }}>
-        <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+      <Card sx={{
+        width: "100%",
+        maxWidth: 420,
+        borderRadius: "20px",
+        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+      }}>
+        <CardContent sx={{ p: { xs: 3.5, sm: 4.5 } }}>
           {/* Header */}
-          <Box sx={{ textAlign: "center", mb: 4 }}>
-            <Box sx={{ display: "inline-flex", p: 2, borderRadius: "50%", backgroundColor: "#1a1a2e15", mb: 1 }}>
-              <LockIcon sx={{ fontSize: 32, color: "#1a1a2e" }} />
-            </Box>
-            <Typography variant="h5" fontWeight="bold" color="#1a1a2e">SupplySync</Typography>
-            <Typography variant="body2" color="text.secondary" mt={0.5}>Supply Made Easy</Typography>
+          <Box sx={{ textAlign: "center", mb: 3.5 }}>
+            <img src={logo} alt="SupplySync" style={{ height: 50, marginBottom: 12, filter: "drop-shadow(0 0 10px rgba(99,102,241,0.4))" }} />
+            <Typography variant="h5" fontWeight="bold" color="primary.main" sx={{ fontFamily: "'Outfit', sans-serif", letterSpacing: "0.5px" }}>SupplySync</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Supply Made Easy</Typography>
           </Box>
 
-          <Typography variant="h6" fontWeight={600} mb={3} textAlign="center">
+          <Typography variant="subtitle1" fontWeight={600} mb={3} textAlign="center" color="text.primary">
             Sign in to your account
           </Typography>
 
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          {error && <Alert severity="error" sx={{ mb: 2.5 }}>{error}</Alert>}
 
           <form onSubmit={handleSubmit}>
             <TextField fullWidth label="Email" name="email" type="email"
               value={form.email} onChange={handleChange}
-              required sx={{ mb: 2 }} size="small" />
+              required sx={{ mb: 2 }} />
             <TextField fullWidth label="Password" name="password" type="password"
               value={form.password} onChange={handleChange}
-              required sx={{ mb: 3 }} size="small" />
+              required sx={{ mb: 3 }} />
             <Button type="submit" fullWidth variant="contained" size="large"
               disabled={loading}
-              sx={{ backgroundColor: "#1a1a2e", "&:hover": { backgroundColor: "#0f3460" },
-                borderRadius: 2, py: 1.5 }}>
+              sx={{
+                backgroundColor: "secondary.main",
+                "&:hover": { backgroundColor: "secondary.dark" },
+                py: 1.5,
+              }}>
               {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
             </Button>
           </form>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 3.5 }} />
 
           {/* Retailer signup */}
           <Box sx={{ textAlign: "center" }}>
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 1 }}>
-              <StorefrontIcon sx={{ fontSize: 18, color: "#66bb6a" }} />
-              <Typography variant="body2" fontWeight={500} color="#66bb6a">New Retailer?</Typography>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 1.5 }}>
+              <StorefrontIcon sx={{ fontSize: 18, color: "success.main" }} />
+              <Typography variant="body2" fontWeight={600} color="success.main">New Retailer?</Typography>
             </Box>
             <Link to="/register" style={{ textDecoration: "none" }}>
-              <Button fullWidth variant="outlined"
-                sx={{ borderColor: "#66bb6a", color: "#66bb6a",
-                  "&:hover": { borderColor: "#388e3c", backgroundColor: "#e8f5e9" },
-                  borderRadius: 2 }}>
+              <Button fullWidth variant="outlined" color="success"
+                sx={{
+                  borderColor: "success.main",
+                  borderRadius: "10px",
+                  "&:hover": { borderColor: "success.dark", backgroundColor: "#ecfdf5" }
+                }}>
                 Register as Retailer
               </Button>
             </Link>
-            <Typography variant="caption" color="text.secondary" display="block" mt={1.5}>
+            <Typography variant="caption" color="text.secondary" display="block" mt={2}>
               Supplier & Warehouse accounts are created by Admin
             </Typography>
           </Box>

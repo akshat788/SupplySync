@@ -17,7 +17,7 @@ ChartJS.register(
   BarElement, PointElement, LineElement, Title, Filler
 );
 
-const COLORS = ["#4fc3f7", "#81c784", "#ce93d8", "#ffb74d", "#ef5350", "#90a4ae", "#4db6ac", "#f06292"];
+const COLORS = ["#4f46e5", "#06b6d4", "#10b981", "#fbbf24", "#ef4444", "#818cf8", "#f472b6", "#a78bfa"];
 
 const Analytics = () => {
   const [dashboard, setDashboard] = useState(null);
@@ -73,11 +73,11 @@ const Analytics = () => {
       {
         label: "Revenue (₹)",
         data: orderAnalytics?.monthlyOrders?.map(m => m.revenue) || [],
-        borderColor: "#4fc3f7",
-        backgroundColor: "#4fc3f720",
+        borderColor: "#4f46e5",
+        backgroundColor: "rgba(79, 70, 229, 0.1)",
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: "#4fc3f7",
+        pointBackgroundColor: "#4f46e5",
       },
     ],
   };
@@ -88,7 +88,7 @@ const Analytics = () => {
     datasets: [{
       label: "Orders",
       data: orderAnalytics?.monthlyOrders?.map(m => m.count) || [],
-      backgroundColor: "#81c784",
+      backgroundColor: "#10b981",
       borderRadius: 6,
     }],
   };
@@ -100,13 +100,13 @@ const Analytics = () => {
       {
         label: "Performance Score",
         data: supplierAnalytics?.suppliers?.slice(0, 6).map(s => s.performanceScore) || [],
-        backgroundColor: "#4fc3f7",
+        backgroundColor: "#06b6d4",
         borderRadius: 6,
       },
       {
         label: "On-Time Delivery",
         data: supplierAnalytics?.suppliers?.slice(0, 6).map(s => s.onTimeDelivery) || [],
-        backgroundColor: "#81c784",
+        backgroundColor: "#10b981",
         borderRadius: 6,
       },
     ],
@@ -119,13 +119,13 @@ const Analytics = () => {
       {
         label: "Available Stock",
         data: inventoryAnalytics?.categoryBreakdown?.map(c => c.totalAvailable) || [],
-        backgroundColor: "#4fc3f7",
+        backgroundColor: "#4f46e5",
         borderRadius: 6,
       },
       {
         label: "Reserved Stock",
         data: inventoryAnalytics?.categoryBreakdown?.map(c => c.totalReserved) || [],
-        backgroundColor: "#ce93d8",
+        backgroundColor: "#fbbf24",
         borderRadius: 6,
       },
     ],
@@ -133,9 +133,9 @@ const Analytics = () => {
 
   return (
     <Layout>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">Analytics</Typography>
-        <Typography variant="body2" color="text.secondary">Visual insights across your supply chain</Typography>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ fontFamily: "'Outfit', sans-serif" }}>Analytics</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Visual insights across your supply chain</Typography>
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -143,16 +143,16 @@ const Analytics = () => {
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         {[
-          { label: "Total Revenue", value: `₹${(dashboard?.financials?.totalRevenue || 0).toLocaleString()}`, color: "#66bb6a" },
-          { label: "Procurement Cost", value: `₹${(dashboard?.financials?.totalProcurementCost || 0).toLocaleString()}`, color: "#ffa726" },
-          { label: "Inventory Value", value: `₹${(dashboard?.financials?.totalInventoryValue || 0).toLocaleString()}`, color: "#42a5f5" },
-          { label: "Total Orders", value: dashboard?.counts?.totalOrders || 0, color: "#ce93d8" },
+          { label: "Total Revenue", value: `₹${(dashboard?.financials?.totalRevenue || 0).toLocaleString()}`, color: "#10b981" },
+          { label: "Procurement Cost", value: `₹${(dashboard?.financials?.totalProcurementCost || 0).toLocaleString()}`, color: "#f59e0b" },
+          { label: "Inventory Value", value: `₹${(dashboard?.financials?.totalInventoryValue || 0).toLocaleString()}`, color: "#06b6d4" },
+          { label: "Total Orders", value: dashboard?.counts?.totalOrders || 0, color: "#4f46e5" },
         ].map(item => (
-          <Grid item xs={12} sm={6} md={3} key={item.label}>
-            <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", textAlign: "center", p: 1 }}>
-              <CardContent>
-                <Typography variant="h5" fontWeight="bold" color={item.color}>{item.value}</Typography>
-                <Typography variant="body2" color="text.secondary">{item.label}</Typography>
+          <Grid item xs={12} sm={6} lg={3} key={item.label}>
+            <Card sx={{ textAlign: "center" }}>
+              <CardContent sx={{ py: 3 }}>
+                <Typography variant="h4" fontWeight="bold" color={item.color}>{item.value}</Typography>
+                <Typography variant="body2" color="text.secondary" fontWeight={500} sx={{ mt: 0.5 }}>{item.label}</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -161,8 +161,8 @@ const Analytics = () => {
 
       <Grid container spacing={3}>
         {/* Revenue Trend Line Chart */}
-        <Grid item xs={12} md={8}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} lg={8}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Revenue Trend (Last 6 Months)</Typography>
               {orderAnalytics?.monthlyOrders?.length > 0 ? (
@@ -175,12 +175,12 @@ const Analytics = () => {
         </Grid>
 
         {/* Order Status Pie */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={6} lg={4}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Order Status</Typography>
               {dashboard?.orderStatusBreakdown?.length > 0 ? (
-                <Box sx={{ maxWidth: 250, mx: "auto" }}>
+                <Box sx={{ maxWidth: 220, mx: "auto" }}>
                   <Pie data={orderPieData} options={chartOptions} />
                 </Box>
               ) : (
@@ -191,8 +191,8 @@ const Analytics = () => {
         </Grid>
 
         {/* Monthly Orders Bar */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={6} lg={6}>
+          <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Monthly Orders</Typography>
               {orderAnalytics?.monthlyOrders?.length > 0 ? (
@@ -205,8 +205,8 @@ const Analytics = () => {
         </Grid>
 
         {/* Supplier Performance Bar */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={6} lg={6}>
+          <Card>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Supplier Performance</Typography>
               {supplierAnalytics?.suppliers?.length > 0 ? (
@@ -219,8 +219,8 @@ const Analytics = () => {
         </Grid>
 
         {/* Inventory by Category Bar */}
-        <Grid item xs={12} md={8}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} lg={8}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Inventory by Category</Typography>
               {inventoryAnalytics?.categoryBreakdown?.length > 0 ? (
@@ -233,12 +233,12 @@ const Analytics = () => {
         </Grid>
 
         {/* Inventory Distribution Pie */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+        <Grid item xs={12} md={6} lg={4}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" fontWeight={600} mb={2}>Inventory Distribution</Typography>
               {inventoryAnalytics?.categoryBreakdown?.length > 0 ? (
-                <Box sx={{ maxWidth: 250, mx: "auto" }}>
+                <Box sx={{ maxWidth: 220, mx: "auto" }}>
                   <Pie data={invPieData} options={chartOptions} />
                 </Box>
               ) : (

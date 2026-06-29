@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import API from "../../api/axios";
+import { getCleanName } from "../../utils/sanitize";
 import {
   Box, Grid, Card, CardContent, Typography,
   CircularProgress, Alert, Chip, LinearProgress,
@@ -16,15 +17,15 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import CategoryIcon from "@mui/icons-material/Category";
 
 const StatCard = ({ title, value, icon, color, subtitle }) => (
-  <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+  <Card sx={{ height: "100%" }}>
     <CardContent sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <Box>
-          <Typography variant="body2" color="text.secondary" mb={0.5}>{title}</Typography>
-          <Typography variant="h4" fontWeight="bold" color={color || "#1a1a2e"}>{value}</Typography>
-          {subtitle && <Typography variant="caption" color="text.secondary">{subtitle}</Typography>}
+          <Typography variant="body2" color="text.secondary" mb={0.5} fontWeight={500}>{title}</Typography>
+          <Typography variant="h4" fontWeight="bold" sx={{ color: "text.primary" }}>{value}</Typography>
+          {subtitle && <Typography variant="caption" color="text.secondary" display="block" mt={0.5}>{subtitle}</Typography>}
         </Box>
-        <Box sx={{ p: 1.5, borderRadius: 2, backgroundColor: `${color}15` || "#1a1a2e15", color: color || "#1a1a2e" }}>
+        <Box sx={{ p: 1.5, borderRadius: "12px", backgroundColor: `${color}15`, color: color }}>
           {icon}
         </Box>
       </Box>
@@ -71,8 +72,12 @@ const AdminDashboard = () => {
   return (
     <Layout>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" fontWeight="bold" color="#1a1a2e">Welcome back, {user?.name} 👋</Typography>
-        <Typography variant="body2" color="text.secondary">Here's what's happening in your supply chain today.</Typography>
+        <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ fontFamily: "'Outfit', sans-serif" }}>
+          Welcome back, {getCleanName(user)} 👋
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          Here's what's happening in your supply chain today.
+        </Typography>
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
@@ -81,37 +86,37 @@ const AdminDashboard = () => {
         <>
           {/* Stat Cards */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard title="Total Suppliers" value={stats.counts.totalSuppliers} icon={<LocalShippingIcon />} color="#4fc3f7" />
+            <Grid item xs={12} sm={6} lg={3}>
+              <StatCard title="Total Suppliers" value={stats.counts.totalSuppliers} icon={<LocalShippingIcon />} color="#06b6d4" />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard title="Total Products" value={stats.counts.totalProducts} icon={<InventoryIcon />} color="#81c784" />
+            <Grid item xs={12} sm={6} lg={3}>
+              <StatCard title="Total Products" value={stats.counts.totalProducts} icon={<InventoryIcon />} color="#4f46e5" />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard title="Total Orders" value={stats.counts.totalOrders} icon={<ShoppingCartIcon />} color="#ce93d8" />
+            <Grid item xs={12} sm={6} lg={3}>
+              <StatCard title="Total Orders" value={stats.counts.totalOrders} icon={<ShoppingCartIcon />} color="#10b981" />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard title="Low Stock Items" value={stats.counts.lowStockItems} icon={<WarningIcon />} color="#ef5350" subtitle="Needs attention" />
+            <Grid item xs={12} sm={6} lg={3}>
+              <StatCard title="Low Stock Items" value={stats.counts.lowStockItems} icon={<WarningIcon />} color="#ef4444" subtitle="Needs attention" />
             </Grid>
           </Grid>
 
           {/* Financials */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={12} md={4}>
-              <StatCard title="Total Revenue" icon={<AttachMoneyIcon />} color="#66bb6a" value={`₹${stats.financials.totalRevenue.toLocaleString()}`} subtitle="From delivered orders" />
+            <Grid item xs={12} sm={6} lg={4}>
+              <StatCard title="Total Revenue" icon={<AttachMoneyIcon />} color="#10b981" value={`₹${stats.financials.totalRevenue.toLocaleString()}`} subtitle="From delivered orders" />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <StatCard title="Procurement Cost" icon={<AttachMoneyIcon />} color="#ffa726" value={`₹${stats.financials.totalProcurementCost.toLocaleString()}`} subtitle="Total purchase orders" />
+            <Grid item xs={12} sm={6} lg={4}>
+              <StatCard title="Procurement Cost" icon={<AttachMoneyIcon />} color="#f59e0b" value={`₹${stats.financials.totalProcurementCost.toLocaleString()}`} subtitle="Total purchase orders" />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <StatCard title="Inventory Value" icon={<AttachMoneyIcon />} color="#42a5f5" value={`₹${stats.financials.totalInventoryValue.toLocaleString()}`} subtitle="Current stock value" />
+            <Grid item xs={12} sm={12} lg={4}>
+              <StatCard title="Inventory Value" icon={<AttachMoneyIcon />} color="#06b6d4" value={`₹${stats.financials.totalInventoryValue.toLocaleString()}`} subtitle="Current stock value" />
             </Grid>
           </Grid>
 
           <Grid container spacing={3} sx={{ mb: 3 }}>
             {/* Order Status Overview */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Order Status Overview</Typography>
                   {stats.orderStatusBreakdown.length === 0 ? (
@@ -129,25 +134,25 @@ const AdminDashboard = () => {
             </Grid>
 
             {/* Inventory Health */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Inventory Health</Typography>
                   <Box sx={{ mb: 3 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                       <Typography variant="body2" color="text.secondary">Healthy Stock</Typography>
-                      <Typography variant="body2" fontWeight={600} color="#66bb6a">{healthPct}%</Typography>
+                      <Typography variant="body2" fontWeight={600} color="#10b981">{healthPct}%</Typography>
                     </Box>
                     <LinearProgress variant="determinate" value={healthPct}
-                      sx={{ height: 10, borderRadius: 5, backgroundColor: "#ffcdd2", "& .MuiLinearProgress-bar": { backgroundColor: "#66bb6a", borderRadius: 5 } }} />
+                      sx={{ height: 8, borderRadius: 5, backgroundColor: "#fee2e2", "& .MuiLinearProgress-bar": { backgroundColor: "#10b981", borderRadius: 5 } }} />
                   </Box>
                   <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                    <Box sx={{ textAlign: "center", p: 2, borderRadius: 2, backgroundColor: "#e8f5e9", flex: 1, mr: 1 }}>
-                      <Typography variant="h5" fontWeight="bold" color="#66bb6a">{healthyStock}</Typography>
+                    <Box sx={{ textAlign: "center", p: 1.5, borderRadius: 2, backgroundColor: "#ecfdf5", flex: 1, mr: 1 }}>
+                      <Typography variant="h6" fontWeight="bold" color="#10b981">{healthyStock}</Typography>
                       <Typography variant="caption" color="text.secondary">Healthy</Typography>
                     </Box>
-                    <Box sx={{ textAlign: "center", p: 2, borderRadius: 2, backgroundColor: "#ffebee", flex: 1 }}>
-                      <Typography variant="h5" fontWeight="bold" color="#ef5350">{stats.counts.lowStockItems}</Typography>
+                    <Box sx={{ textAlign: "center", p: 1.5, borderRadius: 2, backgroundColor: "#fef2f2", flex: 1 }}>
+                      <Typography variant="h6" fontWeight="bold" color="#ef4444">{stats.counts.lowStockItems}</Typography>
                       <Typography variant="caption" color="text.secondary">Low Stock</Typography>
                     </Box>
                   </Box>
@@ -156,19 +161,19 @@ const AdminDashboard = () => {
             </Grid>
 
             {/* Recent Activity Feed */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", height: "100%" }}>
+            <Grid item xs={12} md={12} lg={4}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Recent Activity</Typography>
                   {[
-                    ...stats.recentOrders.slice(0, 2).map(o => ({ text: `Order ${o.orderNumber} — ${o.status}`, color: "#ce93d8", time: new Date(o.createdAt).toLocaleDateString() })),
-                    ...stats.recentPurchaseOrders.slice(0, 2).map(o => ({ text: `PO ${o.poNumber} — ${o.status}`, color: "#4fc3f7", time: new Date(o.createdAt).toLocaleDateString() })),
-                    ...stats.topSuppliers.slice(0, 1).map(s => ({ text: `Supplier ${s.name} — Score ${s.performanceScore}%`, color: "#81c784", time: "Active" })),
+                    ...stats.recentOrders.slice(0, 2).map(o => ({ text: `Order ${o.orderNumber} — ${o.status}`, color: "#818cf8", time: new Date(o.createdAt).toLocaleDateString() })),
+                    ...stats.recentPurchaseOrders.slice(0, 2).map(o => ({ text: `PO ${o.poNumber} — ${o.status}`, color: "#06b6d4", time: new Date(o.createdAt).toLocaleDateString() })),
+                    ...stats.topSuppliers.slice(0, 1).map(s => ({ text: `Supplier ${s.name} — Score ${s.performanceScore}%`, color: "#10b981", time: "Active" })),
                   ].slice(0, 5).map((item, i) => (
-                    <Box key={i} sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, py: 1, borderBottom: "1px solid #f0f0f0" }}>
+                    <Box key={i} sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, py: 1, borderBottom: "1px solid #f1f5f9" }}>
                       <Box sx={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: item.color, mt: 0.8, flexShrink: 0 }} />
-                      <Box>
-                        <Typography variant="body2">{item.text}</Typography>
+                      <Box sx={{ minWidth: 0, flexGrow: 1 }}>
+                        <Typography variant="body2" noWrap sx={{ textOverflow: "ellipsis", overflow: "hidden" }}>{item.text}</Typography>
                         <Typography variant="caption" color="text.secondary">{item.time}</Typography>
                       </Box>
                     </Box>
@@ -184,21 +189,21 @@ const AdminDashboard = () => {
           {/* Recent Orders + Top Suppliers */}
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Recent Orders</Typography>
                   {stats.recentOrders.length === 0 ? (
                     <Typography color="text.secondary">No orders yet.</Typography>
                   ) : (
                     stats.recentOrders.map((order) => (
-                      <Box key={order._id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: 1, borderBottom: "1px solid #f0f0f0" }}>
+                      <Box key={order._id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: 1.5, borderBottom: "1px solid #f1f5f9" }}>
                         <Box>
-                          <Typography variant="body2" fontWeight={500}>{order.orderNumber}</Typography>
+                          <Typography variant="body2" fontWeight={600}>{order.orderNumber}</Typography>
                           <Typography variant="caption" color="text.secondary">{order.retailer?.name || "Unknown"}</Typography>
                         </Box>
                         <Box sx={{ textAlign: "right" }}>
                           <Chip label={order.status} size="small" color={getStatusColor(order.status)} />
-                          <Typography variant="caption" display="block" color="text.secondary">₹{order.totalAmount?.toLocaleString()}</Typography>
+                          <Typography variant="caption" display="block" color="text.secondary" sx={{ mt: 0.5, fontWeight: 500 }}>₹{order.totalAmount?.toLocaleString()}</Typography>
                         </Box>
                       </Box>
                     ))
@@ -208,26 +213,26 @@ const AdminDashboard = () => {
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <Card sx={{ borderRadius: 3, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+              <Card sx={{ height: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" fontWeight={600} mb={2}>Top Suppliers</Typography>
                   {stats.topSuppliers.length === 0 ? (
                     <Typography color="text.secondary">No suppliers yet.</Typography>
                   ) : (
                     stats.topSuppliers.map((supplier) => (
-                      <Box key={supplier._id} sx={{ mb: 2 }}>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 0.5 }}>
+                      <Box key={supplier._id} sx={{ mb: 2.5 }}>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
                           <Box>
-                            <Typography variant="body2" fontWeight={500}>{supplier.name}</Typography>
+                            <Typography variant="body2" fontWeight={600}>{supplier.name}</Typography>
                             <Typography variant="caption" color="text.secondary">{supplier.supplierCode}</Typography>
                           </Box>
                           <Chip label={`${supplier.performanceScore}%`} size="small"
                             color={supplier.performanceScore >= 90 ? "success" : supplier.performanceScore >= 70 ? "warning" : "error"} />
                         </Box>
                         <LinearProgress variant="determinate" value={supplier.performanceScore}
-                          sx={{ height: 6, borderRadius: 3, backgroundColor: "#f0f0f0",
+                          sx={{ height: 6, borderRadius: 3, backgroundColor: "#f1f5f9",
                             "& .MuiLinearProgress-bar": {
-                              backgroundColor: supplier.performanceScore >= 90 ? "#66bb6a" : supplier.performanceScore >= 70 ? "#ffa726" : "#ef5350",
+                              backgroundColor: supplier.performanceScore >= 90 ? "#10b981" : supplier.performanceScore >= 70 ? "#f59e0b" : "#ef4444",
                               borderRadius: 3
                             }
                           }} />
